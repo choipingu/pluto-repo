@@ -38,6 +38,8 @@ function App() {
       await axios.get(`http://hn.algolia.com/api/v1/search?query=${searchValue}`)
         .then((res) => {
           setResult(res.data.hits[dropDownIndex])
+          console.log(res.data.hits[dropDownIndex])
+          setDropDownIndex(-1)
         })
     } catch (err) {
       console.log(err)
@@ -57,7 +59,6 @@ function App() {
       submit()
       setDropDownIndex(-1)
     }
-    console.log(dropDownIndex)
   }
   //드롭메뉴에서 선택
   const selectDropDown = (el) => {
@@ -86,7 +87,10 @@ function App() {
           onChange={changeValue}
           placeholder='검색어를 입력해주세요'
         />
-        <DeleteButton onClick={() => setSearchValue('')}>&times;</DeleteButton>
+        <DeleteButton onClick={() => {
+          setSearchValue('')
+          setDropDownIndex(-1)
+        }}>&times;</DeleteButton>
       </Search>
       {existValue && (
         <ItemUl>
@@ -99,6 +103,7 @@ function App() {
                 onClick={() => {
                   selectDropDown(dropDown)
                   submit()
+                  setDropDownIndex(-1)
                 }}
                 onMouseOver={(e) => {
                   setDropDownIndex(idx)
